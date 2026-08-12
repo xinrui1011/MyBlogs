@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- 左耳 -->
+  <path d="M14 24 Q8 8 22 10 Q22 18 18 24 Z" fill="#ff9ec7"/>
+  <!-- 右耳 -->
+  <path d="M50 24 Q56 8 42 10 Q42 18 46 24 Z" fill="#ff9ec7"/>
+  <!-- 头部/身体 -->
+  <ellipse cx="32" cy="37" rx="23" ry="20" fill="#ffb3d1"/>
+  <!-- 左腿 -->
+  <ellipse cx="20" cy="55" rx="5" ry="4" fill="#ff9ec7"/>
+  <!-- 右腿 -->
+  <ellipse cx="44" cy="55" rx="5" ry="4" fill="#ff9ec7"/>
+  <!-- 卷尾巴 -->
+  <path d="M55 45 Q62 46 60 41 Q58 36 53 40" stroke="#ff9ec7" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- 眼睛 -->
+  <circle cx="23" cy="32" r="3.2" fill="#3a2a33"/>
+  <circle cx="41" cy="32" r="3.2" fill="#3a2a33"/>
+  <!-- 眼睛高光 -->
+  <circle cx="24.2" cy="30.8" r="1" fill="#ffffff"/>
+  <circle cx="42.2" cy="30.8" r="1" fill="#ffffff"/>
+  <!-- 腮红 -->
+  <ellipse cx="14" cy="39" rx="4.5" ry="3" fill="#ff7fae" opacity="0.55"/>
+  <ellipse cx="50" cy="39" rx="4.5" ry="3" fill="#ff7fae" opacity="0.55"/>
+  <!-- 鼻子 -->
+  <ellipse cx="32" cy="42" rx="9" ry="6.5" fill="#ff7fae"/>
+  <!-- 鼻孔 -->
+  <ellipse cx="28.5" cy="41.5" rx="1.8" ry="2.4" fill="#e85a92"/>
+  <ellipse cx="35.5" cy="41.5" rx="1.8" ry="2.4" fill="#e85a92"/>
+  <!-- 嘴 -->
+  <path d="M27 46 Q32 51 37 46" stroke="#e85a92" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
