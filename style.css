@@ -504,13 +504,6 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
 }
 
-.photo-note {
-  margin-top: 36px;
-  text-align: center;
-  font-size: 0.82rem;
-  color: var(--text-faint);
-}
-
 /* 首页博客入口 */
 .blog-cta {
   margin-top: 56px;
