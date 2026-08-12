@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>博客 · Shirley's AI Journey</title>
+  <meta name="description" content="Shirley 的 AI 学习过程记录博客" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-dot"></span>
+        Shirley's&nbsp;AI&nbsp;Journey
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html#home" class="nav-link">简介 <em>Home</em></a>
+        <a href="index.html#interests" class="nav-link">兴趣 <em>Interests</em></a>
+        <a href="blog.html" class="nav-link active">博客 <em>Blog</em></a>
+        <a href="projects.html" class="nav-link">作品 <em>Projects</em></a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 博客页头 -->
+    <section class="section blog-head">
+      <div class="container">
+        <p class="section-kicker reveal">AI LEARNING LOG</p>
+        <h1 class="blog-title reveal">我的<span class="gradient-text">AI 学习博客</span></h1>
+        <p class="section-sub reveal">记录学习 AI 过程中的思考、踩坑与收获。持续更新中……</p>
+      </div>
+    </section>
+
+    <!-- 文章列表 -->
+    <section class="section blog-list-section">
+      <div class="container">
+        <div id="postList" class="post-list">
+          <!-- 文章卡片由 JS 渲染 -->
+        </div>
+        <div id="postEmpty" class="post-empty" hidden>
+          <p>📭 还没有文章。</p>
+          <p class="post-empty-sub">把写好的 md 文件放进 <code>articles/</code> 目录，并在 <code>articles/list.js</code> 中登记文件名即可。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-logo">Shirley's&nbsp;AI&nbsp;Journey</p>
+      <p>© <span id="year"></span> · Shirley · 正在学习 AI 的大学生 · 保持好奇，持续更新</p>
+      <p class="footer-email">✉️ yourname@example.com</p>
+    </div>
+  </footer>
+
+  <script src="articles/parser.js?v=3"></script>
+  <script src="articles/list.js?v=4"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      /* 导航滚动 + 汉堡菜单（与首页一致） */
+      const navbar = document.querySelector(".navbar");
+      const onScrollNav = () => navbar.classList.toggle("scrolled", window.scrollY > 40);
+      window.addEventListener("scroll", onScrollNav, { passive: true });
+      onScrollNav();
+
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+      navToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        navToggle.classList.toggle("open", isOpen);
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      navLinks.querySelectorAll("a").forEach((link) =>
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("open");
+          navToggle.classList.remove("open");
+        })
+      );
+
+      /* 页脚年份 */
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      /* ---------- 渲染文章列表 ---------- */
+      const listEl = document.getElementById("postList");
+      const emptyEl = document.getElementById("postEmpty");
+
+      async function loadPosts() {
+        const files = window.BLOG_POSTS || [];
+        const posts = [];
+        let fetchFailed = false;
+
+        for (const file of files) {
+          try {
+            const res = await fetch("articles/" + encodeURIComponent(file));
+            if (!res.ok) continue;
+            const text = await res.text();
+            const { meta, tags, body, error } = BlogParser.parse(text);
+            if (error) continue;
+            posts.push({ file, meta, tags, body });
+          } catch (e) {
+            fetchFailed = true; /* 网络/协议错误，例如用 file:// 直接打开 */
+          }
+        }
+
+        // 按日期倒序（无日期的排最后）
+        posts.sort((a, b) => {
+          const da = a.meta.date || "0000";
+          const db = b.meta.date || "0000";
+          return db.localeCompare(da);
+        });
+
+        if (posts.length === 0) {
+          if (fetchFailed) {
+            // 抓取失败：给出明确诊断
+            const isFile = location.protocol === "file:";
+            emptyEl.innerHTML =
+              (isFile
+                ? "<p>🔌 检测到你正在用 <code>file://</code> 直接打开页面。</p>"
+                : "<p>🔌 读取文章失败（网络或服务器问题）。</p>") +
+              "<p class='post-empty-sub'>浏览器出于安全限制，直接双击打开时无法读取博客文件。<br />" +
+              "请通过本地服务器访问：<code>http://127.0.0.1:8000/blog.html</code><br />" +
+              "若已在用服务器仍失败，请强制刷新（Mac：<code>Cmd+Shift+R</code>；Windows：<code>Ctrl+Shift+R</code>）。</p>";
+          }
+          emptyEl.hidden = false;
+          return;
+        }
+
+        listEl.innerHTML = posts
+          .map(
+            (p) => `
+          <a class="post-card reveal visible" href="post.html?file=${encodeURIComponent(p.file)}">
+            <div class="post-card-top">
+              <span class="post-date">${BlogParser.formatDate(p.meta.date)}</span>
+              <span class="post-arrow">→</span>
+            </div>
+            <h2 class="post-card-title">${escapeHtml(p.meta.title || "未命名文章")}</h2>
+            ${p.meta.summary ? `<p class="post-card-summary">${escapeHtml(p.meta.summary)}</p>` : ""}
+            ${p.tags.length ? `<div class="post-tags">${p.tags.map((t) => `<span class="post-tag">#${escapeHtml(t)}</span>`).join("")}</div>` : ""}
+          </a>`
+          )
+          .join("");
+      }
+
+      function escapeHtml(s) {
+        return s.replace(/[&<>"']/g, (c) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+        }[c]));
+      }
+
+      loadPosts();
+    })();
+  </script>
+  <script src="galaxy.js"></script>
+</body>
+</html>

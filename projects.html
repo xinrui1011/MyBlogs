@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>作品 · Shirley's AI Journey</title>
+  <meta name="description" content="Shirley 的个人作品集" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-projects">
+
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-dot"></span>
+        Shirley's&nbsp;AI&nbsp;Journey
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html#home" class="nav-link">简介 <em>Home</em></a>
+        <a href="index.html#interests" class="nav-link">兴趣 <em>Interests</em></a>
+        <a href="blog.html" class="nav-link">博客 <em>Blog</em></a>
+        <a href="projects.html" class="nav-link active">作品 <em>Projects</em></a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 页头 -->
+    <section class="section blog-head">
+      <div class="container">
+        <p class="section-kicker reveal">MY WORKS</p>
+        <h1 class="blog-title reveal">我的<span class="gradient-text">作品集</span></h1>
+        <p class="section-sub reveal">正在学习和创作中的项目，会持续更新。</p>
+      </div>
+    </section>
+
+    <!-- 作品网格 -->
+    <section class="section blog-list-section">
+      <div class="container">
+        <div id="projectGrid" class="projects-grid">
+          <!-- 作品卡片由 JS 渲染 -->
+        </div>
+        <div id="projectEmpty" class="post-empty" hidden>
+          <p>📦 还没有作品。</p>
+          <p class="post-empty-sub">在 <code>projects/data.js</code> 里添加一条记录即可展示。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-logo">Shirley's&nbsp;AI&nbsp;Journey</p>
+      <p>© <span id="year"></span> · Shirley · 正在学习 AI 的大学生 · 保持好奇，持续更新</p>
+      <p class="footer-email">✉️ yourname@example.com</p>
+    </div>
+  </footer>
+
+  <script src="projects/data.js?v=3"></script>
+  <script src="grainient.js"></script>  <script>
+    (function () {
+      "use strict";
+
+      /* 导航滚动 + 汉堡菜单（与其他页面一致） */
+      const navbar = document.querySelector(".navbar");
+      const onScrollNav = () => navbar.classList.toggle("scrolled", window.scrollY > 40);
+      window.addEventListener("scroll", onScrollNav, { passive: true });
+      onScrollNav();
+
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+      navToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        navToggle.classList.toggle("open", isOpen);
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      navLinks.querySelectorAll("a").forEach((link) =>
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("open");
+          navToggle.classList.remove("open");
+        })
+      );
+
+      /* 页脚年份 */
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      /* ---------- 渲染作品卡片 ---------- */
+      const gridEl = document.getElementById("projectGrid");
+      const emptyEl = document.getElementById("projectEmpty");
+      const projects = window.PROJECTS || [];
+
+      if (projects.length === 0) {
+        emptyEl.hidden = false;
+      } else {
+        if (projects.length === 1) {
+          gridEl.classList.add("projects-grid-single");
+        }
+        gridEl.innerHTML = projects
+          .map((p, i) => {
+            const tags = (p.tags || []).map((t) => `<span class="post-tag">#${escapeHtml(t)}</span>`).join("");
+            const detailHref = p.detail
+              ? "project.html?file=" + encodeURIComponent(p.detail)
+              : "";
+            const link = p.link
+              ? `<a class="btn btn-primary project-link" href="${escapeHtml(p.link)}" target="_blank" rel="noopener">查看作品 <span class="btn-arrow">→</span></a>`
+              : "";
+            const detailBtn = detailHref
+              ? `<a class="btn btn-ghost project-link" href="${detailHref}">阅读文章 <span class="btn-arrow">→</span></a>`
+              : "";
+            const cover = `
+              <div class="project-cover-grainient" data-grainient='{"animated":false}'>${
+                p.image
+                  ? `<img class="project-bg-img" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)}" loading="lazy" onerror="this.style.display='none'" />`
+                  : ""
+              }</div>`;
+            return `
+              <article class="project-card reveal visible${detailHref ? " project-card-clickable" : ""}" ${detailHref ? `data-detail-href="${detailHref}"` : ""} style="animation-delay:${i * 0.08}s">
+                ${cover}
+                <div class="project-overlay"></div>
+                <div class="project-body">
+                  <div class="project-title-row">
+                    <h3>${escapeHtml(p.title)}</h3>
+                    ${p.status ? `<span class="project-status">${escapeHtml(p.status)}</span>` : ""}
+                  </div>
+                  <p class="project-desc">${escapeHtml(p.desc || "")}</p>
+                  ${tags ? `<div class="post-tags">${tags}</div>` : ""}
+                  ${link}${detailBtn}
+                </div>
+              </article>`;
+          })
+          .join("");
+
+        // 卡片点击进入详情（避开内部按钮链接，避免嵌套 <a>）
+        gridEl.addEventListener("click", (e) => {
+          const card = e.target.closest(".project-card[data-detail-href]");
+          if (!card) return;
+          if (e.target.closest("a")) return; // 内部链接走默认行为
+          location.href = card.dataset.detailHref;
+        });
+      }
+
+      function escapeHtml(s) {
+        return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+        }[c]));
+      }
+    })();
+  </script>
+
+  <script src="galaxy.js"></script>
+</body>
+</html>

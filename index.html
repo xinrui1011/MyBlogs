@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shirley's AI Journey · 我的个人网站</title>
+  <meta name="description" content="Shirley —— 一名在读大学生的 AI 学习记录网站：记录学习 AI 的过程，探索新事物。" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 背景装饰：网格 + 光晕 -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="logo">
+        <span class="logo-dot"></span>
+        Shirley's&nbsp;AI&nbsp;Journey
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-link active">简介 <em>Home</em></a>
+        <a href="#interests" class="nav-link">兴趣 <em>Interests</em></a>
+        <a href="blog.html" class="nav-link">博客 <em>Blog</em></a>
+        <a href="projects.html" class="nav-link">作品 <em>Projects</em></a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ 第一屏：个人简介 ============ -->
+    <section id="home" class="section hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <p class="hero-kicker reveal">
+            <span class="kicker-line"></span>
+            HELLO WORLD · 你好，欢迎来到我的小站
+          </p>
+
+          <h1 class="hero-title reveal">
+            嗨，我是 <span class="gradient-text">Shirley</span><br />
+            一名在读大学生，正在学习 <span class="gradient-text type-wrap">
+              <span id="typeText">AI</span><span class="type-cursor">|</span>
+            </span>
+          </h1>
+
+          <p class="hero-desc reveal">
+            这个网站是我记录 <strong>AI 学习之旅</strong> 的地方 ——
+            从第一行代码开始，把每一次尝试、踩坑与灵感都留在这里。
+            我热爱尝试新事物，相信好奇心是进步最好的燃料。
+          </p>
+
+          <div class="hero-actions reveal">
+            <a href="#interests" class="btn btn-primary">
+              了解我的兴趣 <span class="btn-arrow">→</span>
+            </a>
+            <a href="#home" class="btn btn-ghost">About Me</a>
+          </div>
+
+          <!-- 关于我的信息卡片 -->
+          <div class="about-cards reveal">
+            <div class="about-card">
+              <div class="about-icon">🎓</div>
+              <div>
+                <h3>在读大学生</h3>
+                <p>校园里的一枚好奇星人，正在探索更广阔的科技世界。</p>
+              </div>
+            </div>
+            <div class="about-card">
+              <div class="about-icon">🤖</div>
+              <div>
+                <h3>AI 学习者</h3>
+                <p>记录学习 AI 的过程，见证自己从入门到进阶的每一步。</p>
+              </div>
+            </div>
+            <div class="about-card">
+              <div class="about-icon">🚀</div>
+              <div>
+                <h3>喜欢尝试新事物</h3>
+                <p>对新事物永远保持热情，边学边玩，乐在其中。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧装饰面板 -->
+        <div class="hero-panel reveal">
+          <div class="panel-card">
+            <div class="panel-header">
+              <span class="panel-dot red"></span>
+              <span class="panel-dot yellow"></span>
+              <span class="panel-dot green"></span>
+              <span class="panel-title">ai_learning.log</span>
+            </div>
+            <div class="panel-body">
+              <p><span class="log-time">[09:41]</span> <span class="log-cmd">$ whoami</span></p>
+              <p><span class="log-out">→ 在读大学生 · AI Learner</span></p>
+              <p><span class="log-time">[09:42]</span> <span class="log-cmd">$ goal</span></p>
+              <p><span class="log-out">→ 记录 AI 学习全过程</span></p>
+              <p><span class="log-time">[09:43]</span> <span class="log-cmd">$ curiosity</span></p>
+              <p><span class="log-out success">→ 100% ✔ 喜欢尝试新事物</span></p>
+              <p class="log-cursor">▍</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-hint" aria-hidden="true">
+        <span>SCROLL</span>
+        <div class="mouse"><span class="wheel"></span></div>
+      </div>
+    </section>
+
+    <!-- ============ 第二屏：兴趣爱好 ============ -->
+    <section id="interests" class="section interests">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker">EXPLORE MORE</p>
+          <h2 class="section-title">我的<span class="gradient-text">兴趣爱好</span></h2>
+          <p class="section-sub">生活不止代码与算法 —— 旅行、追剧和阅读，是我充电的三种方式。</p>
+        </div>
+
+        <div class="interests-grid">
+          <!-- 旅游 -->
+          <article class="interest-card reveal">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80"
+                   alt="旅行 —— 山川与远方" loading="lazy" />
+              <span class="card-tag">✈️ Travel</span>
+            </div>
+            <div class="card-body">
+              <h3>旅游</h3>
+              <p>喜欢用脚步丈量世界，去不同的城市看不同的风景，收集每一次出发的期待。</p>
+              <ul class="card-points">
+                <li>向往山川湖海</li>
+                <li>打卡城市烟火</li>
+                <li>计划下一段旅程</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- 追剧 -->
+          <article class="interest-card reveal">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80"
+                   alt="追剧 —— 观影时光" loading="lazy" />
+              <span class="card-tag">🎬 Series</span>
+            </div>
+            <div class="card-body">
+              <h3>追剧</h3>
+              <p>沉浸在好故事里是绝佳的放松方式，无论是科幻大片还是暖心剧集，都照单全收。</p>
+              <ul class="card-points">
+                <li>科幻 / 悬疑爱好者</li>
+                <li>经典二刷三刷</li>
+                <li>片单永远排满</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- 看书 -->
+          <article class="interest-card reveal">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80"
+                   alt="看书 —— 阅读时光" loading="lazy" />
+              <span class="card-tag">📚 Reading</span>
+            </div>
+            <div class="card-body">
+              <h3>看书</h3>
+              <p>纸质书与电子书都爱，享受在文字里慢下来的感觉，也喜欢被新观点击中。</p>
+              <ul class="card-points">
+                <li>技术 & 人文通吃</li>
+                <li>每月一本好书</li>
+                <li>边读边记笔记</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <p class="photo-note reveal">
+          * 以上图片来自 Unsplash 免费图库，之后可随时替换成自己的旅行 / 剧照 / 书架照片。
+        </p>
+
+        <!-- 博客入口 -->
+        <div class="blog-cta reveal">
+          <div class="blog-cta-icon">✍️</div>
+          <div class="blog-cta-text">
+            <h3>我的 AI 学习记录</h3>
+            <p>用博客记录学习 AI 的每一步 —— 思考、踩坑与收获。</p>
+          </div>
+          <a href="blog.html" class="btn btn-primary">
+            进入博客 <span class="btn-arrow">→</span>
+          </a>
+        </div>
+
+        <!-- 作品集入口 -->
+        <div class="blog-cta reveal">
+          <div class="blog-cta-icon">🛠️</div>
+          <div class="blog-cta-text">
+            <h3>我的作品集</h3>
+            <p>正在学习和创作中的项目，持续更新中。</p>
+          </div>
+          <a href="projects.html" class="btn btn-primary">
+            查看作品 <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-logo">Shirley's&nbsp;AI&nbsp;Journey</p>
+      <p>© <span id="year"></span> · Shirley · 正在学习 AI 的大学生 · 保持好奇，持续更新</p>
+      <p class="footer-email">✉️ yourname@example.com</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="galaxy.js"></script>
+</body>
+</html>

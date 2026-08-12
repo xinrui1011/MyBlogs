@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>作品详情 · Shirley's AI Journey</title>
+  <meta name="description" content="Shirley 的作品详情文章" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css" />
+</head>
+<body>
+
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-dot"></span>
+        Shirley's&nbsp;AI&nbsp;Journey
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html#home" class="nav-link">简介 <em>Home</em></a>
+        <a href="index.html#interests" class="nav-link">兴趣 <em>Interests</em></a>
+        <a href="blog.html" class="nav-link">博客 <em>Blog</em></a>
+        <a href="projects.html" class="nav-link active">作品 <em>Projects</em></a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section post-section">
+      <div class="container post-container">
+        <a href="projects.html" class="post-back reveal">← 返回作品集</a>
+
+        <!-- 文章头部 -->
+        <header class="post-header reveal">
+          <h1 id="postTitle" class="post-title">加载中……</h1>
+          <div class="post-meta">
+            <span id="postDate" class="post-date"></span>
+            <span id="postTags" class="post-tags"></span>
+          </div>
+        </header>
+
+        <!-- 正文（由 JS 渲染 markdown） -->
+        <article id="postContent" class="post-content">
+          <p class="loading">正在加载文章……</p>
+        </article>
+
+        <div class="post-footer">
+          <a href="projects.html" class="btn btn-primary">← 返回作品集</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p class="footer-logo">Shirley's&nbsp;AI&nbsp;Journey</p>
+      <p>© <span id="year"></span> · Shirley · 正在学习 AI 的大学生 · 保持好奇，持续更新</p>
+      <p class="footer-email">✉️ yourname@example.com</p>
+    </div>
+  </footer>
+
+  <script src="articles/parser.js?v=4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      /* 导航滚动 + 汉堡菜单（与全站一致） */
+      const navbar = document.querySelector(".navbar");
+      const onScrollNav = () => navbar.classList.toggle("scrolled", window.scrollY > 40);
+      window.addEventListener("scroll", onScrollNav, { passive: true });
+      onScrollNav();
+
+      const navToggle = document.getElementById("navToggle");
+      const navLinks = document.getElementById("navLinks");
+      navToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        navToggle.classList.toggle("open", isOpen);
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      navLinks.querySelectorAll("a").forEach((link) =>
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("open");
+          navToggle.classList.remove("open");
+        })
+      );
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      /* ---------- 加载并渲染作品详情文章 ---------- */
+      const file = new URLSearchParams(location.search).get("file");
+      if (!file) {
+        location.href = "projects.html";
+        return;
+      }
+
+      // 代码高亮：marked v12 renderer 为位置参数签名 (code, infostring, escaped)
+      const renderer = new marked.Renderer();
+      renderer.code = function (code, infostring, escaped) {
+        const lang = (infostring || "").match(/^\S*/)?.[0] || "";
+        if (escaped) {
+          code = code
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&amp;/g, "&")
+            .replace(/&quot;/g, '"');
+        }
+        let html;
+        if (lang && hljs.getLanguage(lang)) {
+          html = hljs.highlight(code, { language: lang }).value;
+        } else {
+          html = hljs.highlightAuto(code).value;
+        }
+        return '<pre class="hljs"><code class="language-' + lang + '">' + html + "</code></pre>";
+      };
+      marked.use({ renderer, gfm: true, breaks: true });
+
+      fetch("articles/" + encodeURIComponent(file))
+        .then((res) => {
+          if (!res.ok) throw new Error("文章不存在");
+          return res.text();
+        })
+        .then((text) => {
+          const { meta, tags, body, error } = BlogParser.parse(text);
+          if (error) throw new Error(error);
+
+          const title = meta.title || "未命名文章";
+          document.title = title + " · Shirley's AI Journey";
+          document.getElementById("postTitle").textContent = title;
+          document.getElementById("postDate").textContent = BlogParser.formatDate(meta.date);
+
+          const tagsEl = document.getElementById("postTags");
+          if (tags.length) {
+            tagsEl.innerHTML = tags
+              .map((t) => `<span class="post-tag">#${t.replace(/[&<>"']/g, (c) => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+              }[c]))}</span>`)
+              .join("");
+          }
+
+          document.getElementById("postContent").innerHTML = marked.parse(body);
+        })
+        .catch((err) => {
+          const isFile = location.protocol === "file:";
+          const msg = isFile
+            ? "检测到你用 file:// 直接打开了页面，浏览器禁止读取本地文章。请通过本地服务器访问：http://127.0.0.1:8000/projects.html"
+            : err.message;
+          document.getElementById("postContent").innerHTML =
+            '<p class="loading">😥 ' + msg + "</p>";
+        });
+    })();
+  </script>
+
+  <script src="galaxy.js"></script>
+</body>
+</html>
