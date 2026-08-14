@@ -9,4 +9,5 @@ window.BLOG_POSTS = [
   "my-first-blog.md",
   "blogs-02.md",
   "blog-03.md",
+  "blog-04.md",
 ];
