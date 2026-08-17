@@ -67,7 +67,10 @@
   </footer>
 
   <script src="articles/parser.js?v=3"></script>
-  <script src="articles/list.js?v=4"></script>
+  <script>
+    // 动态版本号：每次加载强制获取最新文章清单，避免浏览器缓存旧 list.js
+    document.write('<scr' + 'ipt src="articles/list.js?v=' + Date.now() + '"><\/scr' + 'ipt>');
+  </script>
   <script>
     (function () {
       "use strict";
