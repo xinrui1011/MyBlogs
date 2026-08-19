@@ -13,4 +13,5 @@ window.BLOG_POSTS = [
   "blog-05.md",
   "blog-06.md",
   "blog-07.md",
+  "blog-08.md",
 ];
