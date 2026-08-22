@@ -23,3 +23,8 @@ summary: 利用 Minimax 制作一个巨构场景 —— 从提示词提取到成
   <source src="videos/天宫云海.mp4" type="video/mp4" />
   你的浏览器不支持视频播放，请 <a href="videos/天宫云海.mp4">点击下载视频</a>。
 </video>
+
+## 进一步学习
+我将会尝试自己写提示词，并且给视频配上BGM，尽可能让它丰富起来。
+
+这篇blog就到这里啦，下篇见！
