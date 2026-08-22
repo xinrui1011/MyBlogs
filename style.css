@@ -811,6 +811,16 @@ img { display: block; max-width: 100%; }
   margin: 22px auto;
   max-width: 100%;
 }
+.post-content video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 22px auto;
+  border-radius: 12px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: #0b1226;
+  box-shadow: 0 10px 30px rgba(2, 8, 24, 0.5);
+}
 .post-content hr {
   margin: 36px 0;
   border: 0;
